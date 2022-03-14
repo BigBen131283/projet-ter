@@ -1,0 +1,60 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Projet 3 - v0.3</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="https://kit.fontawesome.com/72f3363021.js" crossorigin="anonymous"></script>
+        <script src="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.js"></script>
+        <link type="text/css" rel="stylesheet" href="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.css"/>
+    </head>
+
+    <body>
+        <h1>Réservez votre Vélo</h1>
+        
+        <div class="intro">
+            <div class="container">
+                <div id="slider">
+                    <img src="./resources/images/tome1.jpg" alt="Lanfeust - Un, deux, Troy" id="slide">
+                    <p id="description"></p>
+                </div>
+            </div>
+            <div class="nav">
+                <i class="fa-solid fa-backward-step" id="previous"></i>
+                <i class="fa-regular fa-circle-pause" id="pause_button"></i>
+                <i class="fa-solid fa-forward-step" id="next"></i>
+            </div>  
+        </div>
+        <div class="booking">
+            <div class="partone">
+                <div id="map"></div>
+                <div class="detail">
+                    <h2>Détail de la station</h2>
+                    <label for="city-select">Sélectionner une ville :</label>
+                    <select name="city" id="city-select"></select>
+                    <p>Adresse : <span id="adress">...</span></p>
+                    <p><span id="remain_places"></span> places</p>
+                    <p><span id="remain_bikes"></span> vélos disponibles</p>
+                    <form action="" method="post">
+                        <div class="line">
+                            <label for="last_name">Nom</label>
+                            <input type="text" name="user_lastname" id="name">
+                        </div>
+                        <div class="line">
+                            <label for="first_name">Prénom</label>
+                            <input type="text" name="user_firstname" id="first_name">
+                        </div>
+                        <div class="button">
+                            <button type="submit">Réserver</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="parttwo">
+                <p>Vélo réservé à la station <span id="station"></span> par <span id="client"></span></p>
+                <p>Temps restant : <span id="timer"></span></p>
+            </div>
+        </div>
+    </body>
+</html>
+
+<script type="module" src="./main.js"></script>
