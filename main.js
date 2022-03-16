@@ -87,7 +87,3 @@ for (i=0; i<allCities.length; i++) {
 function selectCity() {
     theCity.setCity(listbox.value)
 }
-// let toyama = new ville("Toyama");
-// let lyon = new ville("Lyon");
-// let toulouse = new ville ("Toulouse")
-// let paris = new ville ("Paris")
