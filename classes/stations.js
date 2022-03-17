@@ -10,6 +10,10 @@ export default class stations {
 
     loadStations() {
         return new Promise ( (resolve, reject) => {
+            if (this.cityName === '--'){
+                resolve(this.allStations)
+                return
+            }
             fetch(this.url)
                 .then((res) => {
                     if (res.ok) {

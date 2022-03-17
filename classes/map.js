@@ -1,6 +1,9 @@
 import stations from "./stations.js"
 
 export default class map {
+    #primaryColor = "#15DEA5";
+    #secondaryColor = "#2B29FF";
+    #resaColor = "#30D620";
     constructor (selectedCity) {
         this.selectedCity = selectedCity;
         this.mapQuestKey = "4Ou16zkSpxJ8izAZ4MEUjBSLFDskRxu4";
@@ -45,6 +48,27 @@ export default class map {
     }
 
     displayStations() {
-        console.log(this.stations.getStation().length)
+        // console.log(this.stations.getStation().length)
+        let viewableStations = this.allStations;
+        console.log(viewableStations)
+        let i=0
+        let markers = L.markerClusterGroup();
+        for (i=0; i<viewableStations.length; i++) {
+            markers.addLayer(L.marker([viewableStations[i].position.lat, viewableStations[i].position.lng], 
+                                    {
+                                        title : viewableStations[i].number, 
+                                        draggable : false,
+                                        clickable : true,
+                                        icon : L.mapquest.icons.circle (
+                                        {
+                                            primaryColor: this.#primaryColor,       // Outer circle line ?
+                                            secondaryColor: this.#secondaryColor,   // Circle color ?
+                                            shadow: true,
+                                            symbol: viewableStations[i].available_bikes
+                                        })
+                                    }
+                ));            
+        }
+        this.map.addLayer(markers); //créé par la fonction createMap et this.map est dans le constructeur
     }
 }

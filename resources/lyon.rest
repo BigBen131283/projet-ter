@@ -1,0 +1,1 @@
+GET https://api.jcdecaux.com/vls/v1/stations?contract=lyon&apiKey=47a5805f3a3ea418d8b31f455ea44acde74e4fe8
