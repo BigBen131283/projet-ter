@@ -75,14 +75,12 @@ export default class map {
                     for (let i=0; i<viewableStations.length; i++) {
                         if (viewableStations[i].number === e.sourceTarget.options.title) {
                             console.log(viewableStations[i])
-                            document.getElementById("remain_bikes").innerText = viewableStations[i].available_bikes;
-                            document.getElementById("places").innerText = viewableStations[i].bike_stands;
-                            if (viewableStations[i].address !== "") {
-                                document.getElementById("address").innerText = viewableStations[i].address;
-                            }
-                            else {
-                                document.getElementById("address").innerText = viewableStations[i].name;
-                            }
+                            window.postMessage(
+                                {
+                                    origin : "clickedStation",
+                                    station : viewableStations[i]
+                                }
+                            )
                         }
                     }
                 })
