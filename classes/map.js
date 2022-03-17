@@ -3,6 +3,7 @@ import stations from "./stations.js"
 export default class map {
     #primaryColor = "#15DEA5";
     #secondaryColor = "#2B29FF";
+    #nobikeColor = "#EB1C41";
     #resaColor = "#30D620";
     constructor (selectedCity) {
         this.selectedCity = selectedCity;
@@ -50,10 +51,13 @@ export default class map {
     displayStations() {
         // console.log(this.stations.getStation().length)
         let viewableStations = this.allStations;
-        console.log(viewableStations)
         let i=0
         let markers = L.markerClusterGroup();
         for (i=0; i<viewableStations.length; i++) {
+            let secondaryColor = this.#secondaryColor;
+            if (viewableStations[i].available_bikes === 0) {
+                secondaryColor = this.#nobikeColor;
+            }
             markers.addLayer(L.marker([viewableStations[i].position.lat, viewableStations[i].position.lng], 
                                     {
                                         title : viewableStations[i].number, 
@@ -62,12 +66,27 @@ export default class map {
                                         icon : L.mapquest.icons.circle (
                                         {
                                             primaryColor: this.#primaryColor,       // Outer circle line ?
-                                            secondaryColor: this.#secondaryColor,   // Circle color ?
+                                            secondaryColor: secondaryColor,   // Circle color ?
                                             shadow: true,
                                             symbol: viewableStations[i].available_bikes
                                         })
                                     }
-                ));            
+                ).on('click', (e) => {
+                    for (let i=0; i<viewableStations.length; i++) {
+                        if (viewableStations[i].number === e.sourceTarget.options.title) {
+                            console.log(viewableStations[i])
+                            document.getElementById("remain_bikes").innerText = viewableStations[i].available_bikes;
+                            document.getElementById("places").innerText = viewableStations[i].bike_stands;
+                            if (viewableStations[i].address !== "") {
+                                document.getElementById("address").innerText = viewableStations[i].address;
+                            }
+                            else {
+                                document.getElementById("address").innerText = viewableStations[i].name;
+                            }
+                        }
+                    }
+                })
+            );            
         }
         this.map.addLayer(markers); //créé par la fonction createMap et this.map est dans le constructeur
     }
