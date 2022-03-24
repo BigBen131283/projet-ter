@@ -1,86 +1,25 @@
 /*General*/
 
-h1
+body
 {
-    display: flex;
-    justify-content: center;
-}
-
-/*Intro - Slider*/
-
-.container
-{
-    max-height:  700px;
-    overflow: hidden;
-    border: 1px solid #000;
-    border-radius: 15px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 3%;
-}
-
-.intro
-{
+    background: linear-gradient(to right bottom, #383D44 24%, #15DEA5  100%);
+    background-repeat: no-repeat;
+    margin: 0;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-#slider
-{
-    width: 100%;
-    position: relative;
-    padding-bottom: 40%;
-    height: 0;
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 25px;
-}
-
-.intro img
-{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 30%;
-    border: 1px solid #000;
-    border-radius: 15px;
-    overflow: hidden;
-}
-
-#slider p
-{
-    width: 65%;
-    padding-bottom: 40%;
-    text-align: justify;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid #000;
-    border-radius: 15px;
-}
-
-/*Navigation*/
-
-.nav
+h1
 {
     display: flex;
     justify-content: center;
-    height: 4rem;
-    width: 40%;
+    color: #fff;
 }
 
-.nav i
-{
-    height: 100%;
-    width: 15%;
-    font-size: 3rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+
 /**/
 
 .booking
@@ -89,6 +28,7 @@ h1
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 100%;
 }
 
 /*Part One*/
@@ -98,7 +38,7 @@ h1
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
+    width: 90%;
 }
 
 
@@ -107,7 +47,7 @@ h1
 #map
 {
     width: 70%;
-    height: 400px;
+    height: 500px;
     border: 1px solid black;
     margin-right: 5px;
 }
@@ -125,7 +65,8 @@ h1
 
 .detail h2
 {
-    background-color: white;
+    background-color: #383D44;
+    color: #fff;
     font-size: 1rem;
     font-weight: normal;
     position: absolute;

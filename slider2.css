@@ -1,14 +1,3 @@
-body
-{
-    background: linear-gradient(to right bottom, #383D44 24%, #15DEA5  100%);
-    background-repeat: no-repeat;
-    margin: 0;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 .intro
 {
     display: flex;
@@ -46,7 +35,6 @@ body
 
 #slide-wrapper-left
 {
-    /* width: 50%; */
     display: flex;
     flex-direction: column;
     justify-content: s;

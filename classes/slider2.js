@@ -1,6 +1,6 @@
 
-const imagesLeft = ["./images/left-1.jpg", "./images/left-2.jpg", "./images/left-3.jpg"]
-const imagesRight = ["./images/right-1.jpg", "./images/right-2.jpg", "./images/right-3.jpg"]
+const imagesLeft = ["./resources/images/left-1.jpg", "./resources/images/left-2.jpg", "./resources/images/left-3.jpg"]
+const imagesRight = ["./resources/images/right-1.jpg", "./resources/images/right-2.jpg", "./resources/images/right-3.jpg"]
 const lastImagePosition = Math.min(imagesLeft.length, imagesRight.length)-1
 
 console.log(imagesLeft)
