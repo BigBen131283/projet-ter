@@ -32,29 +32,31 @@
         <div class="booking">
             <div class="partone">
                 <div id="map"></div>
-                <div class="detail">
-                    <h2>Détail de la station</h2>
-                    <label for="city-select">Sélectionner une ville :</label>
-                    <select name="city" id="city-select"></select>
-                    <p>Adresse : <span id="address">...</span></p>
-                    <p><span id="places"></span> places</p>
-                    <p><span id="remain_bikes"></span> vélos disponibles</p>
-                    <form action="" method="post">
-                        <div class="line">
-                            <label for="last_name">Nom</label>
-                            <input type="text" name="user_lastname" id="name">
+                <div class="detail-wrapper">
+                    <div class="detail">
+                        <h2>Détail de la station</h2>
+                        <label for="city-select">Sélectionner une ville :</label>
+                        <select name="city" id="city-select"></select>
+                        <p>Adresse : <span id="address">...</span></p>
+                        <p><span id="places"></span> places</p>
+                        <p><span id="remain_bikes"></span> vélos disponibles</p>
+                        <div class="form">
+                            <div class="line">
+                                <label for="last_name">Nom</label>
+                                <input type="text" name="user_lastname" id="last_name">
+                            </div>
+                            <div class="line">
+                                <label for="first_name">Prénom</label>
+                                <input type="text" name="user_firstname" id="first_name">
+                            </div>
+                            <div class="button">
+                                <button type="submit" id="resa-button">Réserver</button>
+                            </div>
                         </div>
-                        <div class="line">
-                            <label for="first_name">Prénom</label>
-                            <input type="text" name="user_firstname" id="first_name">
-                        </div>
-                        <div class="button">
-                            <button type="submit">Réserver</button>
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                </div>    
             </div>
-            <div class="parttwo">
+            <div id="parttwo">
                 <p>Vélo réservé à la station <span id="station"></span> par <span id="client"></span></p>
                 <p>Temps restant : <span id="timer"></span></p>
             </div>
