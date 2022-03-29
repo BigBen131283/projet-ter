@@ -88,4 +88,17 @@ export default class map {
         }
         this.map.addLayer(markers); //créé par la fonction createMap et this.map est dans le constructeur
     }
+    bookBike(stationNumber) {
+        let i = this.searchStation(stationNumber);
+        this.allStations[i].available_bikes--;
+        this.displayStations();
+        console.log(this.allStations[i])
+    }
+    searchStation(stationNumber) {
+        for (let i=0; i<this.allStations.length; i++) {
+            if (stationNumber === this.allStations[i].number) {
+                return i;
+            }
+        }
+    }
 }

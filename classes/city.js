@@ -50,5 +50,8 @@ export default class city {
         console.log(cityName);
         this.map.setMapPosition(this.getSelectedCity(cityName))
     }
+    bookBike(stationNumber) {
+        this.map.bookBike(stationNumber)
+    }
     
 }

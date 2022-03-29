@@ -18,7 +18,9 @@ let reservation = {
     active : false,
     fName : "",
     lName : "",
-    stationName : ""
+    stationName : "",
+    stationNumber : "",
+    availableBikes : 0
 }
 
 let listbox = document.getElementById("city-select")
@@ -26,28 +28,7 @@ listbox.addEventListener('change', selectCity)
 
 lastName.addEventListener('keyup', lastNameInput)
 firstName.addEventListener('keyup', firstNameInput)
-resaButton.addEventListener('click', () => {
-        if (reservation.active) {
-            reservation.active = false
-            console.log("libéré")
-            resaButton.innerText = "Réserver"
-            reservation.fName = ""
-            reservation.lName = ""
-            client.innerText = ""
-            station.innerText = ""
-            console.log(document.getElementById("parttwo"))
-            document.getElementById("parttwo").style.opacity = "0"
-        }
-        else {
-            reservation.active = true
-            reservation.fName = firstName.value
-            reservation.lName = lastName.value
-            resaButton.innerText = "Libérer"
-            client.innerText = reservation.fName + " " + reservation.lName
-            station.innerText = reservation.stationName
-            document.getElementById("parttwo").style.opacity = "1"
-        }
-})
+resaButton.addEventListener('click', bookDebookBike)
 
 let theCity = new city();
 let allCities = theCity.getListVilles();
@@ -60,6 +41,9 @@ for (i=0; i<allCities.length; i++) {
 
 resaButton.disabled = checkAllInputs()
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Gestionaire d'événements pour mise à jour de l'interface utilisateur
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 window.addEventListener('message', (e) => {
     console.log(e.data)
@@ -80,6 +64,8 @@ window.addEventListener('message', (e) => {
                 address.innerText = e.data.station.name;
             }
             reservation.stationName = e.data.station.name
+            reservation.stationNumber= e.data.station.number
+            reservation.availableBikes= e.data.station.available_bikes
             formStatus.addressValid = true;
             resaButton.disabled = checkAllInputs()
             break;
@@ -122,26 +108,31 @@ function checkAllInputs () {
     }
 }
 
-// function bookDebookBike () {
-//     if (reservation.active) {
-//         reservation.active = false
-//         console.log("libéré")
-//         resaButton.innerText = "Réserver"
-//         reservation.fName = ""
-//         reservation.lName = ""
-//         client.innerText = ""
-//         station.innerText = ""
-//         console.log(document.getElementById("parttwo"))
-//         document.getElementById("parttwo").style.opacity = "0"
-//     }
-//     else {
-//         reservation.active = true
-//         reservation.fName = firstName.value
-//         reservation.lName = lastName.value
-//         resaButton.innerText = "Libérer"
-//         client.innerText = reservation.fName + " " + reservation.lName
-//         station.innerText = reservation.stationName
-//         document.getElementById("parttwo").style.opacity = "1"
-//     }
-// }
+////////////////////////////////////////////////////////////////////////////////////////////
+// Réservation du vélo et mise à jour de la carte
+////////////////////////////////////////////////////////////////////////////////////////////
+function bookDebookBike () {
+    if (reservation.active) {
+        reservation.active = false
+        console.log("libéré")
+        resaButton.innerText = "Réserver"
+        reservation.fName = ""
+        reservation.lName = ""
+        client.innerText = ""
+        station.innerText = ""
+        console.log(document.getElementById("parttwo"))
+        document.getElementById("parttwo").style.opacity = "0"
+    }
+    else {
+        reservation.active = true
+        reservation.fName = firstName.value
+        reservation.lName = lastName.value
+        resaButton.innerText = "Libérer"
+        client.innerText = reservation.fName + " " + reservation.lName
+        station.innerText = reservation.stationName
+        document.getElementById("parttwo").style.opacity = "1"
+        theCity.bookBike(reservation.stationNumber)
+        remainBikes.innerText = --reservation.availableBikes
+    }
+}
 
