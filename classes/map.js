@@ -49,18 +49,15 @@ export default class map {
     }
 
     displayStations() {
-        // console.log(this.stations.getStation().length)
-        let viewableStations = this.allStations;
-        let i=0
         let markers = L.markerClusterGroup();
-        for (i=0; i<viewableStations.length; i++) {
+        for ( let i=0; i<this.allStations.length; i++) {
             let secondaryColor = this.#secondaryColor;
-            if (viewableStations[i].available_bikes === 0) {
+            if (this.allStations[i].available_bikes === 0) {
                 secondaryColor = this.#nobikeColor;
             }
-            markers.addLayer(L.marker([viewableStations[i].position.lat, viewableStations[i].position.lng], 
+            markers.addLayer(L.marker([this.allStations[i].position.lat, this.allStations[i].position.lng], 
                                     {
-                                        title : viewableStations[i].number, 
+                                        title : this.allStations[i].number, 
                                         draggable : false,
                                         clickable : true,
                                         icon : L.mapquest.icons.circle (
@@ -68,17 +65,17 @@ export default class map {
                                             primaryColor: this.#primaryColor,       // Outer circle line ?
                                             secondaryColor: secondaryColor,   // Circle color ?
                                             shadow: true,
-                                            symbol: viewableStations[i].available_bikes
+                                            symbol: this.allStations[i].available_bikes
                                         })
                                     }
                 ).on('click', (e) => {
-                    for (let i=0; i<viewableStations.length; i++) {
-                        if (viewableStations[i].number === e.sourceTarget.options.title) {
-                            console.log(viewableStations[i])
+                    for (let i=0; i<this.allStations.length; i++) {
+                        if (this.allStations[i].number === e.sourceTarget.options.title) {
+                            console.log(this.allStations[i])
                             window.postMessage(
                                 {
                                     origin : "clickedStation",
-                                    station : viewableStations[i]
+                                    station : this.allStations[i]
                                 }
                             )
                         }
@@ -86,13 +83,18 @@ export default class map {
                 })
             );            
         }
+        console.log(markers.getLayers())
         this.map.addLayer(markers); //créé par la fonction createMap et this.map est dans le constructeur
     }
     bookBike(stationNumber) {
         let i = this.searchStation(stationNumber);
         this.allStations[i].available_bikes--;
         this.displayStations();
-        console.log(this.allStations[i])
+    }
+    unbookBike(stationNumber) {
+        let i = this.searchStation(stationNumber);
+        this.allStations[i].available_bikes++;
+        this.displayStations();
     }
     searchStation(stationNumber) {
         for (let i=0; i<this.allStations.length; i++) {

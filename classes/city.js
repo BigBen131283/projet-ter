@@ -53,5 +53,8 @@ export default class city {
     bookBike(stationNumber) {
         this.map.bookBike(stationNumber)
     }
+    unbookBike(stationNumber) {
+        this.map.unbookBike(stationNumber)
+    }
     
 }

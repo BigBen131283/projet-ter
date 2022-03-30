@@ -22,6 +22,7 @@ let reservation = {
     stationNumber : "",
     availableBikes : 0
 }
+let currentStationNumber = ""
 
 let listbox = document.getElementById("city-select")
 listbox.addEventListener('change', selectCity)
@@ -64,8 +65,8 @@ window.addEventListener('message', (e) => {
                 address.innerText = e.data.station.name;
             }
             reservation.stationName = e.data.station.name
-            reservation.stationNumber= e.data.station.number
-            reservation.availableBikes= e.data.station.available_bikes
+            currentStationNumber = e.data.station.number
+            reservation.availableBikes = e.data.station.available_bikes
             formStatus.addressValid = true;
             resaButton.disabled = checkAllInputs()
             break;
@@ -97,7 +98,6 @@ function firstNameInput() {
 }
 //renvoie false si tous les champs sont bons, valeur affectée à resaButton.disabled
 function checkAllInputs () {
-    console.log(formStatus)
     if ((formStatus.addressValid) && (formStatus.firstNameValid) && (formStatus.lastNameValid) && (formStatus.bikesAvailable)) {
         resaButton.style.fontStyle = "normal"
         return false
@@ -122,11 +122,15 @@ function bookDebookBike () {
         station.innerText = ""
         console.log(document.getElementById("parttwo"))
         document.getElementById("parttwo").style.opacity = "0"
+        theCity.unbookBike(reservation.stationNumber)
+        remainBikes.innerText = ++reservation.availableBikes
+        reservation.stationNumber = ""
     }
     else {
         reservation.active = true
         reservation.fName = firstName.value
         reservation.lName = lastName.value
+        reservation.stationNumber = currentStationNumber
         resaButton.innerText = "Libérer"
         client.innerText = reservation.fName + " " + reservation.lName
         station.innerText = reservation.stationName
