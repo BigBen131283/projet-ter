@@ -16,6 +16,7 @@ let formStatus = {
     firstNameValid : false,
     lastNameValid : false
 }
+const timing = 1200;
 let reservation = {
     active : false,
     fName : "",
@@ -23,7 +24,7 @@ let reservation = {
     stationName : "",
     stationNumber : "",
     availableBikes : 0,
-    tempsRestant : 10
+    tempsRestant : timing 
 }
 let currentStationNumber = ""
 
@@ -115,44 +116,63 @@ function checkAllInputs () {
 ////////////////////////////////////////////////////////////////////////////////////////////
 // Réservation du vélo et mise à jour de la carte
 ////////////////////////////////////////////////////////////////////////////////////////////
-function bookDebookBike () {
+function bookDebookBike(unBook) {
     if (reservation.active) {
         reservation.active = false
-        console.log("libéré")
-        resaButton.innerText = "Réserver"
         reservation.fName = ""
         reservation.lName = ""
         client.innerText = ""
         station.innerText = ""
-        console.log(document.getElementById("parttwo"))
         document.getElementById("parttwo").style.opacity = "0"
         theCity.unbookBike(reservation.stationNumber)
         remainBikes.innerText = ++reservation.availableBikes
         reservation.stationNumber = ""
+
+        if (unBook !== "timer") {
+            reservation.active = true
+            reservation.fName = firstName.value
+            reservation.lName = lastName.value
+            reservation.stationNumber = currentStationNumber
+            client.innerText = reservation.fName + " " + reservation.lName
+            station.innerText = reservation.stationName
+            document.getElementById("parttwo").style.opacity = "1"
+            theCity.bookBike(reservation.stationNumber)
+            remainBikes.innerText = --reservation.availableBikes
+            reservation.tempsRestant = timing
+            timer.innerText = secondsToString(reservation.tempsRestant)
+            clearInterval(stopTimer)
+            stopTimer = setInterval(diminuerTemps, 1000)
+        }
     }
     else {
         reservation.active = true
         reservation.fName = firstName.value
         reservation.lName = lastName.value
         reservation.stationNumber = currentStationNumber
-        resaButton.innerText = "Libérer"
         client.innerText = reservation.fName + " " + reservation.lName
         station.innerText = reservation.stationName
         document.getElementById("parttwo").style.opacity = "1"
         theCity.bookBike(reservation.stationNumber)
         remainBikes.innerText = --reservation.availableBikes
-        timer.innerText = reservation.tempsRestant
+        timer.innerText = secondsToString(reservation.tempsRestant)
         stopTimer = setInterval(diminuerTemps, 1000)
     }
 }
 
 function diminuerTemps() {
-    timer.innerText = reservation.tempsRestant   
+    timer.innerText = secondsToString(reservation.tempsRestant)
     reservation.tempsRestant--
     if (reservation.tempsRestant === 0) {
-        bookDebookBike()
+        bookDebookBike("timer")
         clearInterval(stopTimer)
+        reservation.tempsRestant = timing
     }
-    console.log(reservation.tempsRestant)
 }
 
+function secondsToString(seconds) {
+    let numdays = Math.floor(seconds / 86400);
+    let numhours = Math.floor((seconds % 86400) / 3600);
+    let numminutes = Math.floor(((seconds % 86400) % 3600) / 60);
+    let numseconds = ((seconds % 86400) % 3600) % 60;
+    return numminutes + " min " + numseconds + "s";
+}

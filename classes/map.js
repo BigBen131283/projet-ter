@@ -83,7 +83,7 @@ export default class map {
                 })
             );            
         }
-        console.log(markers.getLayers())
+        // console.log(markers.getLayers())
         this.map.addLayer(markers); //créé par la fonction createMap et this.map est dans le constructeur
     }
     bookBike(stationNumber) {
