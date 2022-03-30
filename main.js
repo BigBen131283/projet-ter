@@ -8,6 +8,8 @@ let remainBikes = document.getElementById("remain_bikes")
 let client = document.getElementById("client")
 let station = document.getElementById("station")
 let partTwo = document.getElementById("parttwo")
+let timer = document.getElementById("timer")
+let stopTimer
 let formStatus = {
     bikesAvailable : false, 
     addressValid : false,
@@ -20,9 +22,11 @@ let reservation = {
     lName : "",
     stationName : "",
     stationNumber : "",
-    availableBikes : 0
+    availableBikes : 0,
+    tempsRestant : 10
 }
 let currentStationNumber = ""
+
 
 let listbox = document.getElementById("city-select")
 listbox.addEventListener('change', selectCity)
@@ -137,6 +141,18 @@ function bookDebookBike () {
         document.getElementById("parttwo").style.opacity = "1"
         theCity.bookBike(reservation.stationNumber)
         remainBikes.innerText = --reservation.availableBikes
+        timer.innerText = reservation.tempsRestant
+        stopTimer = setInterval(diminuerTemps, 1000)
     }
+}
+
+function diminuerTemps() {
+    timer.innerText = reservation.tempsRestant   
+    reservation.tempsRestant--
+    if (reservation.tempsRestant === 0) {
+        bookDebookBike()
+        clearInterval(stopTimer)
+    }
+    console.log(reservation.tempsRestant)
 }
 
