@@ -26,7 +26,7 @@ export default class city {
     }
 
     getListVilles(){return this.#villes}
-    getName () {return this.name}
+    getName () {return this.cityName}
     getCoord (cityName) {
         for (let i=0; i<this.#villes.length; i++) {
             if (this.#villes[i].name === cityName) {
@@ -48,6 +48,7 @@ export default class city {
 
     setCity(cityName) {
         console.log(cityName);
+        this.cityName = cityName; 
         this.map.setMapPosition(this.getSelectedCity(cityName))
     }
     bookBike(stationNumber) {

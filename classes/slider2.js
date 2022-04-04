@@ -3,8 +3,8 @@ const imagesLeft = ["./resources/images/left-1.jpg", "./resources/images/left-2.
 const imagesRight = ["./resources/images/right-1.jpg", "./resources/images/right-2.jpg", "./resources/images/right-3.jpg"]
 const lastImagePosition = Math.min(imagesLeft.length, imagesRight.length)-1
 
-console.log(imagesLeft)
-console.log(imagesRight)
+// console.log(imagesLeft)
+// console.log(imagesRight)
 
 //<img src="" alt="">
 
@@ -50,18 +50,27 @@ function displaySlide(sens) {
 }
 
 let isPaused = false
+let forced = false
 const pauseButton = document.getElementById("pause_button")
 
 function togglePause() {
+    if (forced) {
+        isPaused = false
+        forced = false
+    }
+    // else {
+    //     isPaused = !isPaused    
+    // }
+    console.log(isPaused, forced)
     isPaused = !isPaused
-        if (isPaused === true) {
-            pauseButton.classList.replace("fa-circle-pause", "fa-circle-play")
-            document.getElementById("nav_word").innerText = "Play"
-        }
-        else {
-            pauseButton.classList.replace("fa-circle-play", "fa-circle-pause")
-            document.getElementById("nav_word").innerText = "Pause"
-        }
+    if (isPaused === true) {
+        pauseButton.classList.replace("fa-circle-pause", "fa-circle-play")
+        document.getElementById("nav_word").innerText = "Play"
+    }
+    else {
+        pauseButton.classList.replace("fa-circle-play", "fa-circle-pause")
+        document.getElementById("nav_word").innerText = "Pause"
+    }
 }
 
 pauseButton.addEventListener('click', togglePause)
@@ -83,3 +92,18 @@ previous.addEventListener('click', function() {
 next.addEventListener('click', function() {
     displaySlide(1)
 })
+
+document.addEventListener("keydown", function(e) {
+    switch(e.code) {
+        case "ArrowRight" : displaySlide(1)
+        forced = true
+        togglePause()
+        break
+        case "ArrowLeft" : displaySlide(-1)
+        forced = true
+        togglePause()
+        break
+    }
+    // togglePause(true) : forcer la pause si l'utilisateur appuie sur une des flèches
+})
+
