@@ -57,7 +57,17 @@ if (persistentStorage.getItem("userfName")) {
     formStatus.lastNameValid = true;
 };
 
-resaButton.disabled = checkAllInputs()
+resaButton.disabled = checkAllInputs();
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Gestion du maintien de la station lors de la mise à jour de la page (sans fermer le navigateur)
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+let sessionData = sessionStorage;
+if (sessionData.getItem("cityName")) {
+    theCity.setCity(sessionData.getItem("cityName"));
+    listbox.value = sessionData.getItem("cityName");
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Gestionaire d'événements pour mise à jour de l'interface utilisateur
@@ -170,6 +180,9 @@ function bookDebookBike(unBook) {
         stopTimer = setInterval(diminuerTemps, 1000)
         persistentStorage.setItem("userfName", reservation.fName)
         persistentStorage.setItem("userlName", reservation.lName)
+        sessionData.setItem("stationNumber", reservation.stationNumber)
+        sessionData.setItem("stationName", reservation.stationName)
+        sessionData.setItem("cityName", theCity.getName())
     }
 }
 
