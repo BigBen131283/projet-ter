@@ -38,7 +38,7 @@ export default class map {
     }
 
     loadStations() {
-        this.stations.loadStations()
+        this.stations.loadStations() //Attention ici c'est le loadStation de station.js
             .then((resp) => {
                 this.allStations = resp;
                 this.displayStations();

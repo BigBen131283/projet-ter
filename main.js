@@ -64,9 +64,19 @@ resaButton.disabled = checkAllInputs();
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 let sessionData = sessionStorage;
-if (sessionData.getItem("cityName")) {
+if (sessionData.getItem("reservation")) {
+    // reservation = JSON.parse(sessionData.getItem("reservation"));
     theCity.setCity(sessionData.getItem("cityName"));
     listbox.value = sessionData.getItem("cityName");
+    // reservation.active = true
+    // reservation.fName = firstName.value
+    // reservation.lName = lastName.value
+    // reservation.stationNumber = currentStationNumber
+    // client.innerText = reservation.fName + " " + reservation.lName
+    // station.innerText = reservation.stationName
+    // document.getElementById("parttwo").style.opacity = "1"
+    // // theCity.bookBike(reservation.stationNumber)
+    // remainBikes.innerText = --reservation.availableBikes
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -91,6 +101,7 @@ window.addEventListener('message', (e) => {
             else {
                 address.innerText = e.data.station.name;
             }
+            console.log(reservation)
             reservation.stationName = e.data.station.name
             currentStationNumber = e.data.station.number
             reservation.availableBikes = e.data.station.available_bikes
@@ -180,9 +191,11 @@ function bookDebookBike(unBook) {
         stopTimer = setInterval(diminuerTemps, 1000)
         persistentStorage.setItem("userfName", reservation.fName)
         persistentStorage.setItem("userlName", reservation.lName)
-        sessionData.setItem("stationNumber", reservation.stationNumber)
-        sessionData.setItem("stationName", reservation.stationName)
+        // sessionData.setItem("stationNumber", reservation.stationNumber)
+        // sessionData.setItem("stationName", reservation.stationName)
         sessionData.setItem("cityName", theCity.getName())
+        sessionData.setItem("reservation", JSON.stringify(reservation))
+        console.log(reservation);
     }
 }
 
