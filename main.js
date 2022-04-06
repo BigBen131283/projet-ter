@@ -45,6 +45,18 @@ for (i=0; i<allCities.length; i++) {
     listbox.appendChild(option)
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Gestion du nom d'utilisateur pour les prochaines sessions
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+let persistentStorage = localStorage;
+if (persistentStorage.getItem("userfName")) {
+    firstName.value = persistentStorage.getItem("userfName");
+    lastName.value = persistentStorage.getItem("userlName");
+    formStatus.firstNameValid = true;
+    formStatus.lastNameValid = true;
+};
+
 resaButton.disabled = checkAllInputs()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -125,7 +137,7 @@ function bookDebookBike(unBook) {
         station.innerText = ""
         document.getElementById("parttwo").style.opacity = "0"
         theCity.unbookBike(reservation.stationNumber)
-        remainBikes.innerText = ++reservation.availableBikes
+        // remainBikes.innerText = ++reservation.availableBikes
         reservation.stationNumber = ""
 
         if (unBook !== "timer") {
@@ -156,6 +168,8 @@ function bookDebookBike(unBook) {
         remainBikes.innerText = --reservation.availableBikes
         timer.innerText = secondsToString(reservation.tempsRestant)
         stopTimer = setInterval(diminuerTemps, 1000)
+        persistentStorage.setItem("userfName", reservation.fName)
+        persistentStorage.setItem("userlName", reservation.lName)
     }
 }
 
