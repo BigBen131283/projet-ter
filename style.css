@@ -125,6 +125,8 @@ h1
     background-color: #383D44;
     transition: all 450ms;
     transition-delay: 150ms;
+    margin: 10px;
+
 }
 
 .button button:hover
@@ -133,6 +135,11 @@ h1
     color :#383D44;
     background-color: #15DEA5;
     transform: scale(1.5);
+}
+
+.button #unbook-button
+{
+    display: none;
 }
 
 /*Part Two*/

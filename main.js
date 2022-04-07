@@ -1,21 +1,22 @@
 import city from "./classes/city.js"
 
-let lastName = document.getElementById("last_name")
-let firstName = document.getElementById("first_name")
-let resaButton = document.getElementById("resa-button")
-let address = document.getElementById("address")
-let remainBikes = document.getElementById("remain_bikes")
-let client = document.getElementById("client")
-let station = document.getElementById("station")
-let partTwo = document.getElementById("parttwo")
-let timer = document.getElementById("timer")
+let lastName = document.getElementById("last_name");
+let firstName = document.getElementById("first_name");
+let resaButton = document.getElementById("resa-button");
+let freeButton = document.getElementById("unbook-button");
+let address = document.getElementById("address");
+let remainBikes = document.getElementById("remain_bikes");
+let client = document.getElementById("client");
+let station = document.getElementById("station");
+let partTwo = document.getElementById("parttwo");
+let timer = document.getElementById("timer");
 let stopTimer
 let formStatus = {
     bikesAvailable : false, 
     addressValid : false,
     firstNameValid : false,
     lastNameValid : false
-}
+};
 const timing = 1200;
 let reservation = {
     active : false,
@@ -25,16 +26,18 @@ let reservation = {
     stationNumber : "",
     availableBikes : 0,
     tempsRestant : timing 
-}
-let currentStationNumber = ""
+};
+let currentStationNumber = "";
 
 
-let listbox = document.getElementById("city-select")
-listbox.addEventListener('change', selectCity)
+let listbox = document.getElementById("city-select");
+listbox.addEventListener('change', selectCity);
 
-lastName.addEventListener('keyup', lastNameInput)
-firstName.addEventListener('keyup', firstNameInput)
-resaButton.addEventListener('click', bookDebookBike)
+lastName.addEventListener('keyup', lastNameInput);
+firstName.addEventListener('keyup', firstNameInput);
+resaButton.addEventListener('click', bookDebookBike);
+freeButton.addEventListener('click', libererVelo);
+
 
 let theCity = new city();
 let allCities = theCity.getListVilles();
@@ -42,7 +45,7 @@ let i=0;
 for (i=0; i<allCities.length; i++) {
     let option = document.createElement("option");
     option.value = option.innerHTML = allCities[i].name;
-    listbox.appendChild(option)
+    listbox.appendChild(option);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -87,6 +90,7 @@ window.addEventListener('message', (e) => {
     console.log(e.data)
     switch(e.data.origin) {
         case "clickedStation" :
+            document.getElementById("unbook-button").style.display = "none";
             remainBikes.innerText = e.data.station.available_bikes;
             if (e.data.station.available_bikes === 0) {
                 formStatus.bikesAvailable=false
@@ -158,7 +162,6 @@ function bookDebookBike(unBook) {
         station.innerText = ""
         document.getElementById("parttwo").style.opacity = "0"
         theCity.unbookBike(reservation.stationNumber)
-        // remainBikes.innerText = ++reservation.availableBikes
         reservation.stationNumber = ""
 
         if (unBook !== "timer") {
@@ -175,6 +178,9 @@ function bookDebookBike(unBook) {
             timer.innerText = secondsToString(reservation.tempsRestant)
             clearInterval(stopTimer)
             stopTimer = setInterval(diminuerTemps, 1000)
+            document.getElementById("unbook-button").style.display = "flex"
+            document.getElementById("unbook-button").style.justifyContent = "center"
+            document.getElementById("unbook-button").style.alignItems = "center"
         }
     }
     else {
@@ -188,6 +194,9 @@ function bookDebookBike(unBook) {
         theCity.bookBike(reservation.stationNumber)
         remainBikes.innerText = --reservation.availableBikes
         timer.innerText = secondsToString(reservation.tempsRestant)
+        document.getElementById("unbook-button").style.display = "flex"
+        document.getElementById("unbook-button").style.justifyContent = "center"
+        document.getElementById("unbook-button").style.alignItems = "center"
         stopTimer = setInterval(diminuerTemps, 1000)
         persistentStorage.setItem("userfName", reservation.fName)
         persistentStorage.setItem("userlName", reservation.lName)
@@ -203,11 +212,31 @@ function diminuerTemps() {
     timer.innerText = secondsToString(reservation.tempsRestant)
     reservation.tempsRestant--
     if (reservation.tempsRestant === 0) {
+        remainBikes.innerText = ++reservation.availableBikes
+        document.getElementById("unbook-button").style.display = "none"
         bookDebookBike("timer")
         clearInterval(stopTimer)
         reservation.tempsRestant = timing
     }
 }
+
+function libererVelo () {
+    reservation.active = false
+        reservation.fName = ""
+        reservation.lName = ""
+        client.innerText = ""
+        station.innerText = ""
+        document.getElementById("parttwo").style.opacity = "0"
+        theCity.unbookBike(reservation.stationNumber)
+        remainBikes.innerText = ++reservation.availableBikes
+        reservation.stationNumber = ""
+        clearInterval(stopTimer)
+        document.getElementById("unbook-button").style.display = "none"
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+// Conversion des secondes en jours, heures, minutes, secondes
+////////////////////////////////////////////////////////////////////////////////////////////
 
 function secondsToString(seconds) {
     let numdays = Math.floor(seconds / 86400);
