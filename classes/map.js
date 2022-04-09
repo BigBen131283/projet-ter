@@ -32,7 +32,12 @@ export default class map {
 
     setMapPosition(selectedCity){
         this.selectedCity = selectedCity;
-        this.map.setView(this.selectedCity.position, 10)            //setView vient de mapQuest
+        if (this.selectedCity.name == "--") {
+            this.map.setView(this.selectedCity.position, 3)
+        }
+        else {
+            this.map.setView(this.selectedCity.position, 10)            //setView vient de mapQuest
+        }
         this.stations = new stations(this.selectedCity.name);
         this.loadStations();
     }

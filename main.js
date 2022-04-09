@@ -68,17 +68,17 @@ resaButton.disabled = checkAllInputs();
 
 let sessionData = sessionStorage;
 if (sessionData.getItem("reservation")) {
-    // reservation = JSON.parse(sessionData.getItem("reservation"));
+    reservation = JSON.parse(sessionData.getItem("reservation"));
     theCity.setCity(sessionData.getItem("cityName"));
     listbox.value = sessionData.getItem("cityName");
-    // reservation.active = true
-    // reservation.fName = firstName.value
-    // reservation.lName = lastName.value
+    reservation.active = true
+    reservation.fName = firstName.value
+    reservation.lName = lastName.value
     // reservation.stationNumber = currentStationNumber
-    // client.innerText = reservation.fName + " " + reservation.lName
-    // station.innerText = reservation.stationName
-    // document.getElementById("parttwo").style.opacity = "1"
-    // // theCity.bookBike(reservation.stationNumber)
+    client.innerText = reservation.fName + " " + reservation.lName
+    station.innerText = reservation.stationName
+    document.getElementById("parttwo").style.opacity = "1"
+    bookDebookBike()
     // remainBikes.innerText = --reservation.availableBikes
 }
 
@@ -207,6 +207,10 @@ function bookDebookBike(unBook) {
         console.log(reservation);
     }
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////
+// Libérer le vélo, timer ou click
+////////////////////////////////////////////////////////////////////////////////////////////
 
 function diminuerTemps() {
     timer.innerText = secondsToString(reservation.tempsRestant)

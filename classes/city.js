@@ -4,7 +4,7 @@ export default class city {
     #villes = [
         {
             "name" : "--",
-            "position" : [0, 0]
+            "position" : [31.07819293, 1.7697380]
         },
         {
             "name" : "Toyama",
