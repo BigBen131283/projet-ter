@@ -46,6 +46,12 @@ export default class map {
         this.stations.loadStations() //Attention ici c'est le loadStation de station.js
             .then((resp) => {
                 this.allStations = resp;
+                window.postMessage(
+                    {
+                        origin : "MAPJS-STATIONSLOADED",
+                        stationsnumber : this.allStations.length
+                    }
+                )
                 this.displayStations();
             })
             .catch((err) => {
@@ -107,5 +113,22 @@ export default class map {
                 return i;
             }
         }
+    }
+    updateOneStation(stationNumber, inc) {
+        let theStation = this.allStations[this.searchStation(stationNumber)];
+        if (inc === 1) {
+            this.allStations[this.searchStation(stationNumber)].available_bikes++;
+        }
+        else {
+            this.allStations[this.searchStation(stationNumber)].available_bikes--;
+        }
+        this.displayStations();
+        window.postMessage(
+            {
+                origin : "clickedStation",
+                station : theStation
+            }
+        )
+        return theStation;
     }
 }

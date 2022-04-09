@@ -71,15 +71,13 @@ if (sessionData.getItem("reservation")) {
     reservation = JSON.parse(sessionData.getItem("reservation"));
     theCity.setCity(sessionData.getItem("cityName"));
     listbox.value = sessionData.getItem("cityName");
-    reservation.active = true
-    reservation.fName = firstName.value
-    reservation.lName = lastName.value
-    // reservation.stationNumber = currentStationNumber
-    client.innerText = reservation.fName + " " + reservation.lName
-    station.innerText = reservation.stationName
-    document.getElementById("parttwo").style.opacity = "1"
-    bookDebookBike()
-    // remainBikes.innerText = --reservation.availableBikes
+    reservation.active = true;
+    reservation.fName = firstName.value;
+    reservation.lName = lastName.value;
+    client.innerText = reservation.fName + " " + reservation.lName;
+    station.innerText = reservation.stationName;
+    currentStationNumber = reservation.stationNumber;
+    document.getElementById("parttwo").style.opacity = "1";
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -90,7 +88,9 @@ window.addEventListener('message', (e) => {
     console.log(e.data)
     switch(e.data.origin) {
         case "clickedStation" :
-            document.getElementById("unbook-button").style.display = "none";
+            if(e.data.station.number !== reservation.stationNumber && reservation.active) {
+                document.getElementById("unbook-button").style.display = "none";
+            }
             remainBikes.innerText = e.data.station.available_bikes;
             if (e.data.station.available_bikes === 0) {
                 formStatus.bikesAvailable=false
@@ -111,6 +111,21 @@ window.addEventListener('message', (e) => {
             reservation.availableBikes = e.data.station.available_bikes
             formStatus.addressValid = true;
             resaButton.disabled = checkAllInputs()
+            break;
+        case "MAPJS-STATIONSLOADED" : //Manage reservation after F5 reload
+            console.log("there are" + e.data.stationsnumber + "reloaded")
+            console.log(reservation);
+            if(e.data.stationsnumber !== 0 && reservation.active) {
+                //Decrement the number of available bikes in the station as it has
+                //been reset by the reload
+                let reservedStation = theCity.updateOneStation(reservation.stationNumber, -1);
+                document.getElementById("unbook-button").style.display = "flex";
+                document.getElementById("unbook-button").style.justifyContent = "center";
+                document.getElementById("unbook-button").style.alignItems = "center";
+                clearInterval(stopTimer);
+                stopTimer = setInterval(diminuerTemps, 1000);
+                timer.innerText = secondsToString(timing);
+            }
             break;
     }
 })
@@ -225,17 +240,18 @@ function diminuerTemps() {
 }
 
 function libererVelo () {
-    reservation.active = false
-        reservation.fName = ""
-        reservation.lName = ""
-        client.innerText = ""
-        station.innerText = ""
-        document.getElementById("parttwo").style.opacity = "0"
-        theCity.unbookBike(reservation.stationNumber)
-        remainBikes.innerText = ++reservation.availableBikes
-        reservation.stationNumber = ""
-        clearInterval(stopTimer)
-        document.getElementById("unbook-button").style.display = "none"
+    reservation.active = false;
+        reservation.fName = "";
+        reservation.lName = "";
+        client.innerText = "";
+        station.innerText = "";
+        document.getElementById("parttwo").style.opacity = "0";
+        theCity.unbookBike(reservation.stationNumber);
+        remainBikes.innerText = ++reservation.availableBikes;
+        reservation.stationNumber = "";
+        clearInterval(stopTimer);
+        sessionData.clear();
+        document.getElementById("unbook-button").style.display = "none";
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////

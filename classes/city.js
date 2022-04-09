@@ -57,5 +57,7 @@ export default class city {
     unbookBike(stationNumber) {
         this.map.unbookBike(stationNumber)
     }
-    
+    updateOneStation(stationNumber, inc) {
+        return this.map.updateOneStation(stationNumber,inc); 
+    }
 }
