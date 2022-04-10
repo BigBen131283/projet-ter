@@ -70,6 +70,7 @@ h1
     width: 70%;
     margin-left: 5px;
     padding-left: 10px;
+    padding-right: 10px;
     border: 1px solid #383D44;
     border-radius: 10px;
     box-shadow: 3px 3px 5px #383D44;
@@ -91,11 +92,6 @@ h1
 .detail select, .detail label
 {
     margin-top: 1em;
-}
-
-.form
-{
-    max-width: 300px;
 }
 
 .line
@@ -152,25 +148,12 @@ h1
     opacity: 0;
 }
 
-.sign-block
+#sign 
 {
     display: flex;
     flex-direction: column;
-    /* width: 80%;
-    height: 200px; */
-    /* position: relative; */
+    align-items: center;
 }
-
-/* #sign
-{
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex; 
-    flex-direction: column;
-} */
 
 #sign canvas
 {

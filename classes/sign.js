@@ -27,7 +27,7 @@ export default class sign {
         this.signparent.appendChild(clearbutton);
         clearbutton.classList.add("button");
         this.canvas = document.getElementById("newSignature");
-        this.canvas.width = this.signparent.offsetWidth * 1;
+        this.canvas.width = this.signparent.offsetWidth * 0.95;
         this.canvas.height = "200";
         // CANVAS setup
         this.context = this.canvas.getContext("2d");                // Work 2D
@@ -41,11 +41,7 @@ export default class sign {
         this.context.strokeStyle = "red";                                  
         this.context.lineCap = "round";     // End of the line will be surrounded
         this.context.lineWidth = 1;         // Pen width
-        // this.context.moveTo((this.canvas.width * 0.05), (this.canvas.height * 0.9));
-        // this.context.lineTo((this.canvas.width * 0.95), (this.canvas.height * 0.9));
         this.context.stroke();              // Draw the prepared shape
-        //  Test quadratic
-        // this.testBezierCurve();
         // Clear the points array in case it's already been used
         this.pixels = [];
         // Register starting events, either with the mouse or with a finger touch

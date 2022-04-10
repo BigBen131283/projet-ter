@@ -167,7 +167,14 @@ function firstNameInput() {
 }
 //renvoie false si tous les champs sont bons, valeur affectée à resaButton.disabled
 function checkAllInputs () {
-    console.log(signature.getSignatureStatus());
+    let rezSigned = document.getElementById("sign");
+    if ((formStatus.addressValid) && (formStatus.firstNameValid) && (formStatus.lastNameValid) 
+    && (formStatus.bikesAvailable)) {
+        rezSigned.style.display = "flex";
+    }
+    else{
+        rezSigned.style.display = "none";
+    }
     if ((formStatus.addressValid) && (formStatus.firstNameValid) && (formStatus.lastNameValid) 
             && (formStatus.bikesAvailable) && (signature.getSignatureStatus())) {
         resaButton.style.fontStyle = "normal";
@@ -285,13 +292,4 @@ function displayFreeButton() {
 
 function resizeScreen() {
     signature.resetSignArea();
-}
-
-function displaySignature (){
-    if (signature.active) {
-        document.getElementsByClassName("sign-block").style.display = "flex";
-    }
-    else {
-        document.getElementsByClassName("sign-block").style.display = "none";
-    }
 }
