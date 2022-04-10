@@ -3,12 +3,6 @@ const imagesLeft = ["./resources/images/left-1.jpg", "./resources/images/left-2.
 const imagesRight = ["./resources/images/right-1.jpg", "./resources/images/right-2.jpg", "./resources/images/right-3.jpg"]
 const lastImagePosition = Math.min(imagesLeft.length, imagesRight.length)-1
 
-// console.log(imagesLeft)
-// console.log(imagesRight)
-
-//<img src="" alt="">
-
-
 for (let i=0; i<imagesLeft.length; i++) {
     const slideLeft = document.getElementById("slide-wrapper-left")
     const newSlide = document.createElement("div")
@@ -58,10 +52,7 @@ function togglePause() {
         isPaused = false
         forced = false
     }
-    // else {
-    //     isPaused = !isPaused    
-    // }
-    console.log(isPaused, forced)
+    
     isPaused = !isPaused
     if (isPaused === true) {
         pauseButton.classList.replace("fa-circle-pause", "fa-circle-play")

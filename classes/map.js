@@ -13,7 +13,6 @@ export default class map {
         this.allStations = [];
     }
     getName() {
-        console.log(this.name);
         return(this.name);
     }
     createMap() {
@@ -82,7 +81,6 @@ export default class map {
                 ).on('click', (e) => {
                     for (let i=0; i<this.allStations.length; i++) {
                         if (this.allStations[i].number === e.sourceTarget.options.title) {
-                            console.log(this.allStations[i])
                             window.postMessage(
                                 {
                                     origin : "clickedStation",
@@ -94,7 +92,6 @@ export default class map {
                 })
             );            
         }
-        // console.log(markers.getLayers())
         this.map.addLayer(markers); //créé par la fonction createMap et this.map est dans le constructeur
     }
     bookBike(stationNumber) {

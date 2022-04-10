@@ -21,7 +21,6 @@ export default class city {
     ]
     constructor (cityName = "--") {
         this.cityName = cityName;
-        console.log(this.cityName);
         this.map = new map(this.getSelectedCity(cityName));
     }
 
@@ -30,11 +29,9 @@ export default class city {
     getCoord (cityName) {
         for (let i=0; i<this.#villes.length; i++) {
             if (this.#villes[i].name === cityName) {
-                console.log(cityName+" "+this.#villes[i].position);
                 return this.#villes[i].position;
             }
         }
-        console.log(cityName+" , ville non disponible "+[0,0])
         return [0, 0];
     }
     getSelectedCity(cityName){
@@ -47,7 +44,6 @@ export default class city {
     }
 
     setCity(cityName) {
-        console.log(cityName);
         this.cityName = cityName; 
         this.map.setMapPosition(this.getSelectedCity(cityName))
     }
