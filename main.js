@@ -11,7 +11,9 @@ let client = document.getElementById("client");
 let station = document.getElementById("station");
 let partTwo = document.getElementById("parttwo");
 let timer = document.getElementById("timer");
+let rezSigned = document.getElementById("sign");
 let stopTimer
+let signature
 let formStatus = {
     bikesAvailable : false, 
     addressValid : false,
@@ -26,11 +28,10 @@ let reservation = {
     stationName : "",
     stationNumber : "",
     availableBikes : 0,
-    tempsRestant : timing 
+    tempsRestant : timing,
+    pageReset : false 
 };
 let currentStationNumber = "";
-let signature = new sign();
-
 
 let listbox = document.getElementById("city-select");
 listbox.addEventListener('change', selectCity);
@@ -40,7 +41,7 @@ firstName.addEventListener('keyup', firstNameInput);
 resaButton.addEventListener('click', bookDebookBike);
 freeButton.addEventListener('click', libererVelo);
 window.addEventListener("resize", resizeScreen)
-
+window.addEventListener("beforeunload", pageReset)
 
 let theCity = new city();
 let allCities = theCity.getListVilles();
@@ -80,7 +81,20 @@ if (sessionData.getItem("reservation")) {
     client.innerText = reservation.fName + " " + reservation.lName;
     station.innerText = reservation.stationName;
     currentStationNumber = reservation.stationNumber;
-    document.getElementById("parttwo").style.opacity = "1";
+    partTwo.style.display = "flex";
+    rezSigned.style.display = "none";
+    if (reservation.pageReset) {
+        signature = new sign(true);
+        reservation.pageReset = false;
+        clearInterval(stopTimer);
+        stopTimer = setInterval(diminuerTemps, 1000);
+    }
+    else {
+        signature = new sign()
+    }
+}
+else {
+    signature = new sign()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -128,7 +142,7 @@ window.addEventListener('message', (e) => {
                 displayFreeButton();
                 clearInterval(stopTimer);
                 stopTimer = setInterval(diminuerTemps, 1000);
-                timer.innerText = secondsToString(timing);
+                timer.innerText = secondsToString(reservation.tempsRestant);
             }
             break;
         case "signatureChanged" : 
@@ -167,7 +181,6 @@ function firstNameInput() {
 }
 //renvoie false si tous les champs sont bons, valeur affectée à resaButton.disabled
 function checkAllInputs () {
-    let rezSigned = document.getElementById("sign");
     if ((formStatus.addressValid) && (formStatus.firstNameValid) && (formStatus.lastNameValid) 
     && (formStatus.bikesAvailable)) {
         rezSigned.style.display = "flex";
@@ -196,7 +209,8 @@ function bookDebookBike(unBook) {
         reservation.lName = "";
         client.innerText = "";
         station.innerText = "";
-        document.getElementById("parttwo").style.opacity = "0";
+        partTwo.style.display = "none";
+        rezSigned.style.display = "flex";
         theCity.unbookBike(reservation.stationNumber);
         reservation.stationNumber = "";
 
@@ -207,7 +221,8 @@ function bookDebookBike(unBook) {
             reservation.stationNumber = currentStationNumber;
             client.innerText = reservation.fName + " " + reservation.lName;
             station.innerText = reservation.stationName;
-            document.getElementById("parttwo").style.opacity = "1";
+            partTwo.style.display = "flex";
+            rezSigned.style.display = "none";
             theCity.bookBike(reservation.stationNumber);
             remainBikes.innerText = --reservation.availableBikes;
             reservation.tempsRestant = timing;
@@ -224,7 +239,8 @@ function bookDebookBike(unBook) {
         reservation.stationNumber = currentStationNumber;
         client.innerText = reservation.fName + " " + reservation.lName;
         station.innerText = reservation.stationName;
-        document.getElementById("parttwo").style.opacity = "1";
+        partTwo.style.display = "flex";
+        rezSigned.style.display = "none";
         theCity.bookBike(reservation.stationNumber);
         remainBikes.innerText = --reservation.availableBikes;
         timer.innerText = secondsToString(reservation.tempsRestant);
@@ -259,7 +275,8 @@ function libererVelo () {
         reservation.lName = "";
         client.innerText = "";
         station.innerText = "";
-        document.getElementById("parttwo").style.opacity = "0";
+        partTwo.style.display = "none";
+        rezSigned.style.display = "flex";
         theCity.unbookBike(reservation.stationNumber);
         remainBikes.innerText = ++reservation.availableBikes;
         reservation.stationNumber = "";
@@ -291,5 +308,19 @@ function displayFreeButton() {
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 function resizeScreen() {
-    signature.resetSignArea();
+    if (reservation.active) {
+        signature.resetSignArea();
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+// Détection du rafraichissement de la page (F5 ou bouton) 
+////////////////////////////////////////////////////////////////////////////////////////////
+
+function pageReset() {
+    if (reservation.active) {
+        reservation.pageReset = true;
+        clearInterval(stopTimer);
+        sessionData.setItem("reservation", JSON.stringify(reservation));
+    }
 }

@@ -2,14 +2,16 @@ export default class sign {
 
     version = "sign.js 1.10, Apr 04 2022 : "
 
-    constructor() {
+    constructor(resetPage = false) {
         this.signparent = document.getElementById("sign");
         this.canvas;            // Signature zone
         this.context;           // The canvas context. Accessed by multiple handlers
         this.pixels = [];
         this.xyLast = {};
 
-        this.#setFramework();
+        if (!resetPage) {
+            this.#setFramework();
+        }
     }
 
     // Dynamically build the interface
