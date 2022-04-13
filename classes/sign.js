@@ -9,9 +9,8 @@ export default class sign {
         this.pixels = [];
         this.xyLast = {};
 
-        if (!resetPage) {
-            this.#setFramework();
-        }
+        this.#setFramework();
+        
     }
 
     // Dynamically build the interface

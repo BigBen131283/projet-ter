@@ -9,11 +9,13 @@ let address = document.getElementById("address");
 let remainBikes = document.getElementById("remain_bikes");
 let client = document.getElementById("client");
 let station = document.getElementById("station");
-let partTwo = document.getElementById("parttwo");
 let timer = document.getElementById("timer");
+
 let rezSigned = document.getElementById("sign");
+let partTwo = document.getElementById("parttwo");
+
 let stopTimer
-let signature
+let signature = new sign();
 let formStatus = {
     bikesAvailable : false, 
     addressValid : false,
@@ -29,7 +31,6 @@ let reservation = {
     stationNumber : "",
     availableBikes : 0,
     tempsRestant : timing,
-    pageReset : false 
 };
 let currentStationNumber = "";
 
@@ -41,7 +42,6 @@ firstName.addEventListener('keyup', firstNameInput);
 resaButton.addEventListener('click', bookDebookBike);
 freeButton.addEventListener('click', libererVelo);
 window.addEventListener("resize", resizeScreen)
-window.addEventListener("beforeunload", pageReset)
 
 let theCity = new city();
 let allCities = theCity.getListVilles();
@@ -81,20 +81,9 @@ if (sessionData.getItem("reservation")) {
     client.innerText = reservation.fName + " " + reservation.lName;
     station.innerText = reservation.stationName;
     currentStationNumber = reservation.stationNumber;
-    partTwo.style.display = "flex";
-    rezSigned.style.display = "none";
-    if (reservation.pageReset) {
-        signature = new sign(true);
-        reservation.pageReset = false;
+    displaySections();
         clearInterval(stopTimer);
         stopTimer = setInterval(diminuerTemps, 1000);
-    }
-    else {
-        signature = new sign()
-    }
-}
-else {
-    signature = new sign()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -182,13 +171,6 @@ function firstNameInput() {
 //renvoie false si tous les champs sont bons, valeur affectée à resaButton.disabled
 function checkAllInputs () {
     if ((formStatus.addressValid) && (formStatus.firstNameValid) && (formStatus.lastNameValid) 
-    && (formStatus.bikesAvailable)) {
-        rezSigned.style.display = "flex";
-    }
-    else{
-        rezSigned.style.display = "none";
-    }
-    if ((formStatus.addressValid) && (formStatus.firstNameValid) && (formStatus.lastNameValid) 
             && (formStatus.bikesAvailable) && (signature.getSignatureStatus())) {
         resaButton.style.fontStyle = "normal";
         return false;
@@ -209,8 +191,7 @@ function bookDebookBike(unBook) {
         reservation.lName = "";
         client.innerText = "";
         station.innerText = "";
-        partTwo.style.display = "none";
-        rezSigned.style.display = "flex";
+        displaySections();
         theCity.unbookBike(reservation.stationNumber);
         reservation.stationNumber = "";
 
@@ -221,8 +202,7 @@ function bookDebookBike(unBook) {
             reservation.stationNumber = currentStationNumber;
             client.innerText = reservation.fName + " " + reservation.lName;
             station.innerText = reservation.stationName;
-            partTwo.style.display = "flex";
-            rezSigned.style.display = "none";
+            displaySections();
             theCity.bookBike(reservation.stationNumber);
             remainBikes.innerText = --reservation.availableBikes;
             reservation.tempsRestant = timing;
@@ -239,8 +219,7 @@ function bookDebookBike(unBook) {
         reservation.stationNumber = currentStationNumber;
         client.innerText = reservation.fName + " " + reservation.lName;
         station.innerText = reservation.stationName;
-        partTwo.style.display = "flex";
-        rezSigned.style.display = "none";
+        displaySections();
         theCity.bookBike(reservation.stationNumber);
         remainBikes.innerText = --reservation.availableBikes;
         timer.innerText = secondsToString(reservation.tempsRestant);
@@ -271,18 +250,17 @@ function diminuerTemps() {
 
 function libererVelo () {
     reservation.active = false;
-        reservation.fName = "";
-        reservation.lName = "";
-        client.innerText = "";
-        station.innerText = "";
-        partTwo.style.display = "none";
-        rezSigned.style.display = "flex";
-        theCity.unbookBike(reservation.stationNumber);
-        remainBikes.innerText = ++reservation.availableBikes;
-        reservation.stationNumber = "";
-        clearInterval(stopTimer);
-        sessionData.clear();
-        document.getElementById("unbook-button").style.display = "none";
+    displaySections();
+    reservation.fName = "";
+    reservation.lName = "";
+    client.innerText = "";
+    station.innerText = "";
+    theCity.unbookBike(reservation.stationNumber);
+    remainBikes.innerText = ++reservation.availableBikes;
+    reservation.stationNumber = "";
+    clearInterval(stopTimer);
+    sessionData.clear();
+    document.getElementById("unbook-button").style.display = "none";
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -313,14 +291,13 @@ function resizeScreen() {
     }
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////
-// Détection du rafraichissement de la page (F5 ou bouton) 
-////////////////////////////////////////////////////////////////////////////////////////////
-
-function pageReset() {
+function displaySections() {
     if (reservation.active) {
-        reservation.pageReset = true;
-        clearInterval(stopTimer);
-        sessionData.setItem("reservation", JSON.stringify(reservation));
+        partTwo.style.display = "flex";
+        rezSigned.style.display = "none";
+    }
+    else {
+        partTwo.style.display = "none";
+        rezSigned.style.display = "flex";
     }
 }
