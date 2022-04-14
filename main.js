@@ -41,7 +41,7 @@ lastName.addEventListener('keyup', lastNameInput);
 firstName.addEventListener('keyup', firstNameInput);
 resaButton.addEventListener('click', bookDebookBike);
 freeButton.addEventListener('click', libererVelo);
-window.addEventListener("resize", resizeScreen)
+// window.addEventListener("resize", resizeScreen) 
 
 let theCity = new city();
 let allCities = theCity.getListVilles();
@@ -97,7 +97,11 @@ window.addEventListener('message', (e) => {
     switch(e.data.origin) {
         case "clickedStation" :
             if(e.data.station.number !== reservation.stationNumber && reservation.active) {
-                document.getElementById("unbook-button").style.display = "none";
+                freeButton.style.display = "none";
+                displaySections(true);
+            }
+            if(e.data.station.number == reservation.stationNumber && reservation.active) {
+                freeButton.style.display = "flex";
             }
             remainBikes.innerText = e.data.station.available_bikes;
             if (e.data.station.available_bikes === 0) {
@@ -170,6 +174,7 @@ function firstNameInput() {
 }
 //renvoie false si tous les champs sont bons, valeur affectée à resaButton.disabled
 function checkAllInputs () {
+    console.log(formStatus, signature.getSignatureStatus())
     if ((formStatus.addressValid) && (formStatus.firstNameValid) && (formStatus.lastNameValid) 
             && (formStatus.bikesAvailable) && (signature.getSignatureStatus())) {
         resaButton.style.fontStyle = "normal";
@@ -241,7 +246,7 @@ function diminuerTemps() {
     reservation.tempsRestant--
     if (reservation.tempsRestant === 0) {
         remainBikes.innerText = ++reservation.availableBikes
-        document.getElementById("unbook-button").style.display = "none"
+        freeButton.style.display = "none"
         bookDebookBike("timer")
         clearInterval(stopTimer)
         reservation.tempsRestant = timing
@@ -260,7 +265,7 @@ function libererVelo () {
     reservation.stationNumber = "";
     clearInterval(stopTimer);
     sessionData.clear();
-    document.getElementById("unbook-button").style.display = "none";
+    freeButton.style.display = "none";
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -276,9 +281,9 @@ function secondsToString(seconds) {
 }
 
 function displayFreeButton() {
-    document.getElementById("unbook-button").style.display = "flex";
-    document.getElementById("unbook-button").style.justifyContent = "center";
-    document.getElementById("unbook-button").style.alignItems = "center";
+    freeButton.style.display = "flex";
+    freeButton.style.justifyContent = "center";
+    freeButton.style.alignItems = "center";
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -286,18 +291,30 @@ function displayFreeButton() {
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 function resizeScreen() {
-    if (reservation.active) {
         signature.resetSignArea();
-    }
 }
 
-function displaySections() {
-    if (reservation.active) {
+////////////////////////////////////////////////////////////////////////////////////////////
+// Si réservation active, on n'affiche que la station réservée et le timer
+// Si pas de réservation, on affiche la signature
+// Si une réservation est active et qu'on clique sur une autre station on affiche signature et timer (paramètre forced)
+////////////////////////////////////////////////////////////////////////////////////////////
+
+function displaySections(forced = false) {
+    if (forced) {
         partTwo.style.display = "flex";
-        rezSigned.style.display = "none";
+        rezSigned.style.display = "flex";
+        signature.resetSignAreaWidth();
     }
     else {
-        partTwo.style.display = "none";
-        rezSigned.style.display = "flex";
+        if (reservation.active) {
+            partTwo.style.display = "flex";
+            rezSigned.style.display = "none";
+        }
+        else {
+            partTwo.style.display = "none";
+            rezSigned.style.display = "flex";
+            signature.resetSignAreaWidth();
+        }
     }
 }

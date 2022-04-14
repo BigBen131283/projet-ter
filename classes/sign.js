@@ -55,6 +55,7 @@ export default class sign {
             }
         )
     }
+
     // ------------------------------------------------------------------------
     // Handler functions are declared like that to get an access to this
     // pointing on the class instance
@@ -163,9 +164,30 @@ export default class sign {
         console.log(this.version + message);
     }
 
+////////////////////////////////////////////////////////////////////////////////////////////
+// Gestion du resize screen et de la width après changement de la taille de l'écran
+// 
+////////////////////////////////////////////////////////////////////////////////////////////
+
     resetSignArea() {
         this.clear();
     }
+
+    
+    resetSignAreaWidth() {
+        this.canvas.width = this.signparent.offsetWidth * 0.95;
+        this.context.fillStyle = "white";                                        // white background
+        this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);     // Fill area
+        // Draw a line at the bottom of the sign area
+        this.context.strokeStyle = "red";                                  
+        this.context.lineCap = "round";     // End of the line will be surrounded
+        this.context.lineWidth = 1;         // Pen width
+        this.context.stroke();              // Draw the prepared shape
+    }
+    
+////////////////////////////////////////////////////////////////////////////////////////////
+// 
+////////////////////////////////////////////////////////////////////////////////////////////
 
     getSignatureStatus() {
         return this.pixels.length === 0 ? false : true;        
