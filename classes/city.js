@@ -1,6 +1,6 @@
 import map from "./map.js"
 
-export default class city {
+export default class City {
     #villes = [
         {
             "name" : "--",

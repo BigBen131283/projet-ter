@@ -122,15 +122,24 @@ h1
     transition: all 450ms;
     transition-delay: 150ms;
     margin: 10px;
+    font-style: normal;
 
 }
 
-.button button:hover
+.button button[disabled] {
+    font-style: italic;
+    background-color: #fff;
+    border: 2px solid #000;
+    color: #000;
+}
+
+.button button:not([disabled]):hover
 {
     border: solid 2px #383D44;
     color :#383D44;
     background-color: #15DEA5;
     transform: scale(1.5);
+    font-style: normal;
 }
 
 .button #unbook-button

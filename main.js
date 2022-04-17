@@ -1,4 +1,4 @@
-import city from "./classes/city.js"
+import City from "./classes/city.js"
 import sign from "./classes/sign.js"
 
 let lastName = document.getElementById("last_name");
@@ -37,13 +37,13 @@ let currentStationNumber = "";
 let listbox = document.getElementById("city-select");
 listbox.addEventListener('change', selectCity);
 
-lastName.addEventListener('keyup', lastNameInput);
+lastName.addEventListener('keyup', handleLastNameInput);
 firstName.addEventListener('keyup', firstNameInput);
 resaButton.addEventListener('click', bookDebookBike);
 freeButton.addEventListener('click', libererVelo);
 // window.addEventListener("resize", resizeScreen) 
 
-let theCity = new city();
+let theCity = new City();
 let allCities = theCity.getListVilles();
 let i=0;
 for (i=0; i<allCities.length; i++) {
@@ -124,9 +124,9 @@ window.addEventListener('message', (e) => {
             resaButton.disabled = checkAllInputs();
             break;
 
-        ////////////////////////////////////////////////////////////////////////////////////////////
-        // 
-        ////////////////////////////////////////////////////////////////////////////////////////////           
+////////////////////////////////////////////////////////////////////////////////////////////
+// 
+////////////////////////////////////////////////////////////////////////////////////////////           
         case "MAPJS-STATIONSLOADED" : //Manage reservation after F5 reload
             if(e.data.stationsnumber !== 0 && reservation.active) {
                 //Decrement the number of available bikes in the station as it has
@@ -153,7 +153,7 @@ function selectCity() {
     theCity.setCity(listbox.value)
 }
 
-function lastNameInput() {
+function handleLastNameInput() {
     if (lastName.value === "") {
         formStatus.lastNameValid = false;
     }
@@ -175,17 +175,36 @@ function firstNameInput() {
 //renvoie false si tous les champs sont bons, valeur affectée à resaButton.disabled
 function checkAllInputs () {
     console.log(formStatus, signature.getSignatureStatus())
-    if ((formStatus.addressValid) && (formStatus.firstNameValid) && (formStatus.lastNameValid) 
-            && (formStatus.bikesAvailable) && (signature.getSignatureStatus())) {
-        resaButton.style.fontStyle = "normal";
-        return false;
-    }
-    else {
-        resaButton.style.fontStyle = "italic";
+    // if ((formStatus.addressValid) && (formStatus.firstNameValid) && (formStatus.lastNameValid) 
+    //         && (formStatus.bikesAvailable) && (signature.getSignatureStatus())) {
+    //     return false;
+    // }
+    // else {
+    //     return true;
+    // }
+    // même chose que ce qu'il y a au dessus
+    // return !((formStatus.addressValid) && (formStatus.firstNameValid) && (formStatus.lastNameValid) 
+    // && (formStatus.bikesAvailable) && (signature.getSignatureStatus()));
+////////////////////////////////////////////////////////////////////////////////////////////    
+// et de façon plus lisible (permet de rajouter des conditions de façon plus lisible et donc limiter les erreurs)
+////////////////////////////////////////////////////////////////////////////////////////////
+    if (!formStatus.addressValid){
         return true;
     }
+    if (!formStatus.firstNameValid){
+        return true;
+    }
+    if (!formStatus.lastNameValid){
+        return true;
+    }
+    if (!formStatus.bikesAvailable){
+        return true;
+    }
+    if (!signature.getSignatureStatus()){
+        return true;
+    }
+    return false;
 }
-
 ////////////////////////////////////////////////////////////////////////////////////////////
 // Réservation du vélo et mise à jour de la carte
 ////////////////////////////////////////////////////////////////////////////////////////////

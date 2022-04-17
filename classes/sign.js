@@ -28,7 +28,7 @@ export default class sign {
         this.signparent.appendChild(clearbutton);
         clearbutton.classList.add("button");
         this.canvas = document.getElementById("newSignature");
-        this.canvas.width = this.signparent.offsetWidth * 0.95;
+        this.canvas.width = this.signparent.offsetWidth * 1;
         this.canvas.height = "200";
         // CANVAS setup
         this.context = this.canvas.getContext("2d");                // Work 2D
@@ -175,7 +175,7 @@ export default class sign {
 
     
     resetSignAreaWidth() {
-        this.canvas.width = this.signparent.offsetWidth * 0.95;
+        this.canvas.width = this.signparent.offsetWidth * 1;
         this.context.fillStyle = "white";                                        // white background
         this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);     // Fill area
         // Draw a line at the bottom of the sign area
