@@ -98,7 +98,8 @@ window.addEventListener('message', (e) => {
         case "clickedStation" :
             if(e.data.station.number !== reservation.stationNumber && reservation.active) {
                 freeButton.style.display = "none";
-                displaySections(true);
+                signature.setFakeSignature();
+                displaySections();
             }
             if(e.data.station.number == reservation.stationNumber && reservation.active) {
                 freeButton.style.display = "flex";
@@ -175,16 +176,6 @@ function firstNameInput() {
 //renvoie false si tous les champs sont bons, valeur affectée à resaButton.disabled
 function checkAllInputs () {
     console.log(formStatus, signature.getSignatureStatus())
-    // if ((formStatus.addressValid) && (formStatus.firstNameValid) && (formStatus.lastNameValid) 
-    //         && (formStatus.bikesAvailable) && (signature.getSignatureStatus())) {
-    //     return false;
-    // }
-    // else {
-    //     return true;
-    // }
-    // même chose que ce qu'il y a au dessus
-    // return !((formStatus.addressValid) && (formStatus.firstNameValid) && (formStatus.lastNameValid) 
-    // && (formStatus.bikesAvailable) && (signature.getSignatureStatus()));
 ////////////////////////////////////////////////////////////////////////////////////////////    
 // et de façon plus lisible (permet de rajouter des conditions de façon plus lisible et donc limiter les erreurs)
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -318,24 +309,16 @@ function resizeScreen() {
 ////////////////////////////////////////////////////////////////////////////////////////////
 // Si réservation active, on n'affiche que la station réservée et le timer
 // Si pas de réservation, on affiche la signature
-// Si une réservation est active et qu'on clique sur une autre station on affiche signature et timer (paramètre forced)
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-function displaySections(forced = false) {
-    if (forced) {
+function displaySections() {
+    if (reservation.active) {
         partTwo.style.display = "flex";
-        rezSigned.style.display = "flex";
-        signature.resetSignAreaWidth();
+        rezSigned.style.display = "none";
     }
     else {
-        if (reservation.active) {
-            partTwo.style.display = "flex";
-            rezSigned.style.display = "none";
-        }
-        else {
-            partTwo.style.display = "none";
-            rezSigned.style.display = "flex";
-            signature.resetSignAreaWidth();
-        }
+        partTwo.style.display = "none";
+        rezSigned.style.display = "flex";
+        signature.resetSignAreaWidth();
     }
 }

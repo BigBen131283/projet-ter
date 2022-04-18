@@ -192,4 +192,8 @@ export default class sign {
     getSignatureStatus() {
         return this.pixels.length === 0 ? false : true;        
     }
+
+    setFakeSignature() {
+        this.pixels.push(0, 0);
+    }
 }
