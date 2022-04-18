@@ -128,9 +128,9 @@ h1
 
 .button button[disabled] {
     font-style: italic;
-    background-color: #fff;
+    background-color: rgb(119, 119, 119);
     border: 2px solid #000;
-    color: #000;
+    color: #fff;
 }
 
 .button button:not([disabled]):hover

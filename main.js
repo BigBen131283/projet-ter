@@ -261,14 +261,15 @@ function bookDebookBike(unBook) {
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 function diminuerTemps() {
-    timer.innerText = secondsToString(reservation.tempsRestant)
-    reservation.tempsRestant--
+    timer.innerText = secondsToString(reservation.tempsRestant);
+    reservation.tempsRestant--;
+    sessionData.setItem("reservation", JSON.stringify(reservation));
     if (reservation.tempsRestant === 0) {
-        remainBikes.innerText = ++reservation.availableBikes
-        freeButton.style.display = "none"
-        bookDebookBike("timer")
-        clearInterval(stopTimer)
-        reservation.tempsRestant = timing
+        remainBikes.innerText = ++reservation.availableBikes;
+        freeButton.style.display = "none";
+        bookDebookBike("timer");
+        clearInterval(stopTimer);
+        reservation.tempsRestant = timing;
     }
 }
 
@@ -279,6 +280,7 @@ function libererVelo () {
     reservation.lName = "";
     client.innerText = "";
     station.innerText = "";
+    reservation.tempsRestant = timing;
     theCity.unbookBike(reservation.stationNumber);
     remainBikes.innerText = ++reservation.availableBikes;
     reservation.stationNumber = "";
