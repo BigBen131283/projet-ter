@@ -47,11 +47,61 @@ export default class sign {
         this.pixels = [];
         // Register starting events, either with the mouse or with a finger touch
         this.canvas.addEventListener('mousedown', this.on_mousedown, false);
-        this.canvas.addEventListener('touchstart', this.on_mousedown, false);
+        this.canvas.addEventListener('touchstart', this.on_fingerdown, false);
         window.postMessage(
             {
                 origin : "signatureCleared",
                 pixels : this.pixels.length
+            }
+        )
+    }
+
+    // ------------------------------------------------------------------------
+    // 
+    // ------------------------------------------------------------------------
+    on_fingerdown = e => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.canvas.addEventListener('touchmove', this.on_fingermove, false);
+        this.canvas.addEventListener('touchend', this.on_fingerup, false);
+        [...e.changedTouches].forEach(touch => {
+            this.context.beginPath();           // Create a new path
+            this.context.moveTo(touch.clientX, touch.clientY);
+            this.xyLast = { x:touch.clientX, y:touch.clientY};                   // Memorize the current points into the latest known position
+        })
+    }
+
+    on_fingermove = e => {
+        // console.log("fingermove", e);
+        console.log("Touches", e.touches.length);
+        console.log("Targets", e.targetTouches.length);
+        console.log("Changed", e.changedTouches.length);
+        e.preventDefault();
+        e.stopPropagation();
+        [...e.changedTouches].forEach(touch => {
+            let xyAdd = {
+                x : (this.xyLast.x + touch.clientX) / 2,
+                y : (this.xyLast.y + touch.clientY) / 2
+            };
+            // Bezier curve added to the current subpath and then drawn
+            this.context.quadraticCurveTo(this.xyLast.x, this.xyLast.y, xyAdd.x, xyAdd.y);
+            this.context.stroke();                  // Draw the curve
+                                                    // Then we reset the path to draw the next section of the curve
+            this.context.beginPath();               
+            this.context.moveTo(xyAdd.x, xyAdd.y);  // Prepare next draw by moving our pen to the current position
+            this.xyLast = {x:touch.clientX, y:touch.clientY};                       // Memorize the current points into the latest known position
+        })
+    }
+    
+    on_fingerup = e => {
+        this.remove_event_listeners();
+        [...e.changedTouches].forEach(touch => {
+            this.context.stroke();                  // Draw final points
+        })
+        window.postMessage(
+            {
+                origin : "signatureChanged",
+                pixels : 0
             }
         )
     }
@@ -66,8 +116,6 @@ export default class sign {
                                 // Register movement events
         this.canvas.addEventListener('mousemove', this.on_mousemove, false);
         this.canvas.addEventListener('mouseup', this.on_mouseup, false);
-        this.canvas.addEventListener('touchmove', this.on_mousemove, false);
-        this.canvas.addEventListener('touchend', this.on_mouseup, false);
 
         // Get the points where the mouse click occurred
         let xy = this.get_board_coords(e);
@@ -124,6 +172,7 @@ export default class sign {
     // Track mouse coordinates for start move end events    
     // ------------------------------------------------------------------------
     get_board_coords(e) {
+        console.log(e.offsetX, e.offsetY)
         return {
             x : e.offsetX,
             y : e.offsetY
@@ -141,11 +190,11 @@ export default class sign {
     remove_event_listeners() {
         this.canvas.removeEventListener('mousemove', this.on_mousemove, false);
         this.canvas.removeEventListener('mouseup', this.on_mouseup, false);
-        this.canvas.removeEventListener('touchmove', this.on_mousemove, false);
-        this.canvas.removeEventListener('touchend', this.on_mouseup, false);
+        this.canvas.removeEventListener('touchmove', this.on_fingermove, false);
+        this.canvas.removeEventListener('touchend', this.on_fingerup, false);
 
         document.body.removeEventListener('mouseup', this.on_mouseup, false);
-        document.body.removeEventListener('touchend', this.on_mouseup, false);
+        document.body.removeEventListener('touchend', this.on_fingerup, false);
     }
     // ----------------------------------------------- 
     // Look at https://www.youtube.com/watch?v=Ccxd6qzqFms for Bézier curves

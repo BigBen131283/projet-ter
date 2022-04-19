@@ -140,11 +140,11 @@ window.addEventListener('message', (e) => {
             }
             break;
         case "signatureChanged" : 
-            console.log("signature changed")
+            // console.log("signature changed")
             resaButton.disabled = checkAllInputs();
             break;
         case "signatureCleared" : 
-            console.log("signature cleared")
+            // console.log("signature cleared")
             resaButton.disabled = checkAllInputs();
             break;
     }
@@ -175,7 +175,7 @@ function firstNameInput() {
 }
 //renvoie false si tous les champs sont bons, valeur affectée à resaButton.disabled
 function checkAllInputs () {
-    console.log(formStatus, signature.getSignatureStatus())
+
 ////////////////////////////////////////////////////////////////////////////////////////////    
 // et de façon plus lisible (permet de rajouter des conditions de façon plus lisible et donc limiter les erreurs)
 ////////////////////////////////////////////////////////////////////////////////////////////
