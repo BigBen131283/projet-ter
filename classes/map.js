@@ -41,6 +41,11 @@ export default class map {
         this.loadStations();
     }
 
+    setStationPosition(stationNumber){
+        let x = this.getStation(stationNumber);
+        this.map.setView(x.position, 14);
+    }
+
     loadStations() {
         this.stations.loadStations() //Attention ici c'est le loadStation de station.js
             .then((resp) => {
@@ -81,6 +86,8 @@ export default class map {
                 ).on('click', (e) => {
                     for (let i=0; i<this.allStations.length; i++) {
                         if (this.allStations[i].number === e.sourceTarget.options.title) {
+                            console.log(this.allStations[i])
+                            this.map.setView(this.allStations[i].position, 14)
                             window.postMessage(
                                 {
                                     origin : "clickedStation",
@@ -108,6 +115,13 @@ export default class map {
         for (let i=0; i<this.allStations.length; i++) {
             if (stationNumber === this.allStations[i].number) {
                 return i;
+            }
+        }
+    }
+    getStation(stationNumber) {
+        for (let i=0; i<this.allStations.length; i++) {
+            if (stationNumber === this.allStations[i].number) {
+                return this.allStations[i];
             }
         }
     }

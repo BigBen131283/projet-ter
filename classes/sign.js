@@ -177,7 +177,6 @@ export default class sign {
     // Track mouse coordinates for start move end events    
     // ------------------------------------------------------------------------
     get_board_coords(e) {
-        console.log(e.offsetX, e.offsetY)
         return {
             x : e.offsetX,
             y : e.offsetY

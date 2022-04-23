@@ -82,8 +82,8 @@ if (sessionData.getItem("reservation")) {
     station.innerText = reservation.stationName;
     currentStationNumber = reservation.stationNumber;
     displaySections();
-        clearInterval(stopTimer);
-        stopTimer = setInterval(diminuerTemps, 1000);
+    clearInterval(stopTimer);
+    stopTimer = setInterval(diminuerTemps, 1000);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -134,6 +134,7 @@ window.addEventListener('message', (e) => {
                 //been reset by the reload
                 let reservedStation = theCity.updateOneStation(reservation.stationNumber, -1);
                 displayFreeButton();
+                theCity.setStation(reservation.stationNumber);
                 clearInterval(stopTimer);
                 stopTimer = setInterval(diminuerTemps, 1000);
                 timer.innerText = secondsToString(reservation.tempsRestant);
@@ -278,6 +279,7 @@ function libererVelo () {
     clearInterval(stopTimer);
     sessionData.clear();
     freeButton.style.display = "none";
+    signature.resetSignArea();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////

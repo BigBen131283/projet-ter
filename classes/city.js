@@ -47,6 +47,10 @@ export default class City {
         this.cityName = cityName; 
         this.map.setMapPosition(this.getSelectedCity(cityName))
     }
+    setStation(stationNumber) {
+        console.log("reset Map Position to " + stationNumber);
+        this.map.setStationPosition(stationNumber);
+    }
     bookBike(stationNumber) {
         this.map.bookBike(stationNumber)
     }
