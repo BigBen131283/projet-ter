@@ -86,8 +86,7 @@ export default class map {
                 ).on('click', (e) => {
                     for (let i=0; i<this.allStations.length; i++) {
                         if (this.allStations[i].number === e.sourceTarget.options.title) {
-                            console.log(this.allStations[i])
-                            this.map.setView(this.allStations[i].position, 14)
+                            this.map.setView(this.allStations[i].position, this.map.getZoom())
                             window.postMessage(
                                 {
                                     origin : "clickedStation",
