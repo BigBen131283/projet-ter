@@ -10,7 +10,7 @@ for (let i=0; i<imagesLeft.length; i++) {
     img.src = imagesLeft[i]
     slideLeft.appendChild(newSlide)
     newSlide.appendChild(img)
-    newSlide.classList.add("slide-left"+[i+1])
+    newSlide.classList.add("slide", "slide-left"+[i+1])
 }
 
 for (let i=0; i<imagesRight.length; i++) {
@@ -20,7 +20,7 @@ for (let i=0; i<imagesRight.length; i++) {
     img.src = imagesRight[i]
     slideRight.appendChild(newSlide)
     newSlide.appendChild(img)
-    newSlide.classList.add("slide-right"+[i+1])
+    newSlide.classList.add("slide","slide-right"+[i+1])
 }
 
 let position = 0

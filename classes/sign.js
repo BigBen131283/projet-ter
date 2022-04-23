@@ -64,32 +64,37 @@ export default class sign {
         e.stopPropagation();
         this.canvas.addEventListener('touchmove', this.on_fingermove, false);
         this.canvas.addEventListener('touchend', this.on_fingerup, false);
+        let clientrect = this.canvas.getBoundingClientRect();
         [...e.changedTouches].forEach(touch => {
             this.context.beginPath();           // Create a new path
-            this.context.moveTo(touch.clientX, touch.clientY);
-            this.xyLast = { x:touch.clientX, y:touch.clientY};                   // Memorize the current points into the latest known position
+            this.context.moveTo(touch.clientX - clientrect.x, touch.clientY - clientrect.y);
+            this.xyLast = { x:touch.clientX - clientrect.x, y:touch.clientY - clientrect.y};                   // Memorize the current points into the latest known position
+            this.pixels.push(touch.clientX - clientrect.x, touch.clientY - clientrect.y);       // Store points for optional later use
+            console.log(`Finger down here ${this.xyLast.x} ${this.xyLast.y}, moving to this place`);
         })
     }
 
     on_fingermove = e => {
         // console.log("fingermove", e);
-        console.log("Touches", e.touches.length);
-        console.log("Targets", e.targetTouches.length);
-        console.log("Changed", e.changedTouches.length);
+        // console.log("Touches", e.touches.length);
+        // console.log("Targets", e.targetTouches.length);
+        // console.log("Changed", e.changedTouches.length);
         e.preventDefault();
         e.stopPropagation();
+        let clientrect = this.canvas.getBoundingClientRect();
         [...e.changedTouches].forEach(touch => {
             let xyAdd = {
-                x : (this.xyLast.x + touch.clientX) / 2,
-                y : (this.xyLast.y + touch.clientY) / 2
+                x : (this.xyLast.x + touch.clientX - clientrect.x) / 2,
+                y : (this.xyLast.y + touch.clientY - clientrect.y) / 2
             };
             // Bezier curve added to the current subpath and then drawn
             this.context.quadraticCurveTo(this.xyLast.x, this.xyLast.y, xyAdd.x, xyAdd.y);
+            this.pixels.push(xyAdd.x, xyAdd.y);     // Store points for optional later use
             this.context.stroke();                  // Draw the curve
                                                     // Then we reset the path to draw the next section of the curve
             this.context.beginPath();               
             this.context.moveTo(xyAdd.x, xyAdd.y);  // Prepare next draw by moving our pen to the current position
-            this.xyLast = {x:touch.clientX, y:touch.clientY};                       // Memorize the current points into the latest known position
+            this.xyLast = {x:touch.clientX - clientrect.x, y:touch.clientY - clientrect.y};                       // Memorize the current points into the latest known position
         })
     }
     
@@ -101,7 +106,7 @@ export default class sign {
         window.postMessage(
             {
                 origin : "signatureChanged",
-                pixels : 0
+                pixels : this.pixels.length
             }
         )
     }
