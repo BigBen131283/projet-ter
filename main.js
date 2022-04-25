@@ -98,11 +98,13 @@ window.addEventListener('message', (e) => {
         case "clickedStation" :
             if(e.data.station.number !== reservation.stationNumber && reservation.active) {
                 freeButton.style.display = "none";
+                displayResaButton();
                 signature.setFakeSignature();
                 displaySections();
             }
             if(e.data.station.number == reservation.stationNumber && reservation.active) {
                 freeButton.style.display = "flex";
+                resaButton.style.display = "none";
             }
             remainBikes.innerText = e.data.station.available_bikes;
             if (e.data.station.available_bikes === 0) {
@@ -210,6 +212,7 @@ function bookDebookBike(unBook) {
         displaySections();
         theCity.unbookBike(reservation.stationNumber);
         reservation.stationNumber = "";
+        displayResaButton();
 
         if (unBook !== "timer") {
             reservation.active = true;
@@ -226,6 +229,7 @@ function bookDebookBike(unBook) {
             clearInterval(stopTimer);
             stopTimer = setInterval(diminuerTemps, 1000);
             displayFreeButton();
+            resaButton.style.display = "none";
         }
     }
     else {
@@ -240,6 +244,7 @@ function bookDebookBike(unBook) {
         remainBikes.innerText = --reservation.availableBikes;
         timer.innerText = secondsToString(reservation.tempsRestant);
         displayFreeButton();
+        resaButton.style.display = "none";
         stopTimer = setInterval(diminuerTemps, 1000);
         persistentStorage.setItem("userfName", reservation.fName);
         persistentStorage.setItem("userlName", reservation.lName);
@@ -279,6 +284,7 @@ function libererVelo () {
     clearInterval(stopTimer);
     sessionData.clear();
     freeButton.style.display = "none";
+    displayResaButton();
     signature.resetSignArea();
 }
 
@@ -292,6 +298,12 @@ function secondsToString(seconds) {
     let numminutes = Math.floor(((seconds % 86400) % 3600) / 60);
     let numseconds = ((seconds % 86400) % 3600) % 60;
     return numminutes + " min " + numseconds + "s";
+}
+
+function displayResaButton() {
+    resaButton.style.display = "flex";
+    resaButton.style.justifyContent = "center";
+    resaButton.style.alignItems = "center";
 }
 
 function displayFreeButton() {
