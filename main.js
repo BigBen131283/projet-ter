@@ -1,12 +1,15 @@
 import City from "./classes/city.js"
 import sign from "./classes/sign.js"
 
+$(document).ready(function(){
+
 let lastName = document.getElementById("last_name");
 let firstName = document.getElementById("first_name");
 let resaButton = document.getElementById("resa-button");
 let freeButton = document.getElementById("unbook-button");
 let address = document.getElementById("address");
 let remainBikes = document.getElementById("remain_bikes");
+let places = document.getElementById("places")
 let client = document.getElementById("client");
 let station = document.getElementById("station");
 let timer = document.getElementById("timer");
@@ -113,7 +116,7 @@ window.addEventListener('message', (e) => {
             else {
                 formStatus.bikesAvailable = true;
             }
-            document.getElementById("places").innerText = e.data.station.bike_stands;
+            places.innerText = e.data.station.bike_stands;
             if (e.data.station.address !== "") {
                 address.innerText = e.data.station.address;
             }
@@ -154,7 +157,19 @@ window.addEventListener('message', (e) => {
 })
 
 function selectCity() {
+    if (reservation.active) {
+        changeCity();
+    }
     theCity.setCity(listbox.value)
+}
+
+function changeCity() {
+    libererVelo();
+    places.innerText = "";
+    remainBikes.innerText = "";
+    address.innerText = "";
+    formStatus.bikesAvailable = false;
+    formStatus.addressValid = false;
 }
 
 function handleLastNameInput() {
@@ -213,6 +228,7 @@ function bookDebookBike(unBook) {
         theCity.unbookBike(reservation.stationNumber);
         reservation.stationNumber = "";
         displayResaButton();
+        $('input').prop('disabled',false).css({'color':'black', 'font-style':'normal'});
 
         if (unBook !== "timer") {
             reservation.active = true;
@@ -230,6 +246,7 @@ function bookDebookBike(unBook) {
             stopTimer = setInterval(diminuerTemps, 1000);
             displayFreeButton();
             resaButton.style.display = "none";
+            $('input').prop('disabled',true).css({'color':'red', 'font-style':'italic'});
         }
     }
     else {
@@ -250,6 +267,9 @@ function bookDebookBike(unBook) {
         persistentStorage.setItem("userlName", reservation.lName);
         sessionData.setItem("cityName", theCity.getName());
         sessionData.setItem("reservation", JSON.stringify(reservation));
+        // $('#last_name').prop('disabled', true);
+        // $('#first_name').prop('disabled', true);
+        $('input').prop('disabled',true).css({'color':'red', 'font-style':'italic'});
     }
 }
 
@@ -286,6 +306,7 @@ function libererVelo () {
     freeButton.style.display = "none";
     displayResaButton();
     signature.resetSignArea();
+    $('input').prop('disabled',false).css({'color':'black', 'font-style':'normal'});
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -336,3 +357,4 @@ function displaySections() {
         signature.resetSignAreaWidth();
     }
 }
+})
