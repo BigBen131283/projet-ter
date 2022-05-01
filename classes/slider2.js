@@ -1,4 +1,3 @@
-
 const imagesLeft = ["./resources/images/left-1.jpg", "./resources/images/left-2.jpg", "./resources/images/left-3.jpg"]
 const imagesRight = ["./resources/images/right-1.jpg", "./resources/images/right-2.jpg", "./resources/images/right-3.jpg"]
 const lastImagePosition = Math.min(imagesLeft.length, imagesRight.length)-1
@@ -97,4 +96,3 @@ document.addEventListener("keydown", function(e) {
     }
     // togglePause(true) : forcer la pause si l'utilisateur appuie sur une des flèches
 })
-

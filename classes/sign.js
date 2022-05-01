@@ -1,6 +1,5 @@
 export default class sign {
 
-    version = "sign.js 1.10, Apr 04 2022 : "
 
     constructor(resetPage = false) {
         this.signparent = document.getElementById("sign");
