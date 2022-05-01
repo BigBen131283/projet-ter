@@ -140,6 +140,12 @@ h1
     background-color: #15DEA5;
     transform: scale(1.5);
     font-style: normal;
+    cursor: pointer;
+}
+
+#sign button
+{
+    cursor: pointer;
 }
 
 .button #unbook-button

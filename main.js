@@ -87,6 +87,7 @@ if (sessionData.getItem("reservation")) {
     displaySections();
     clearInterval(stopTimer);
     stopTimer = setInterval(diminuerTemps, 1000);
+    $('input').prop('disabled',true).css({'color':'red', 'font-style':'italic'});
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
