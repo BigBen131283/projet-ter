@@ -55,11 +55,11 @@ function togglePause() {
     isPaused = !isPaused
     if (isPaused === true) {
         pauseButton.classList.replace("fa-circle-pause", "fa-circle-play")
-        document.getElementById("nav_word").innerText = "Play"
+        pauseButton.innerText = "Play"
     }
     else {
         pauseButton.classList.replace("fa-circle-play", "fa-circle-pause")
-        document.getElementById("nav_word").innerText = "Pause"
+        pauseButton.innerText = "Pause"
     }
 }
 
